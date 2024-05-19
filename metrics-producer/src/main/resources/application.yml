@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: metrics-producer
@@ -5,8 +8,12 @@ spring:
     bootstrap-servers: localhost:29092
     producer:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    consumer:
-      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
 
-server:
-  port: 8080
+topic:
+  name: metrics-topic
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics
