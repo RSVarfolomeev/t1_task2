@@ -19,56 +19,90 @@ GET /metrics: Получение списка всех метрик.
 GET /metrics/{id}: Получение конкретной метрики по ее идентификатору.
 
 # Реализация:
-Проект состоит из двух модулей:
+Проект состоит из двух модулей-сервисов:
 ### metrics-producer
-...
+Сервис сбора и отправки метрик работы приложения, который каждые 10 секунд запускает периодическую задачу, отправляющую в
+Кафку следующие метрики:
+* "disk.free"
+* "disk.total"
+* "jvm.buffer.memory.used"
+* "jvm.memory.max"
+* "jvm.memory.used"
+* "system.cpu.usage"
+
+Метрики отправляются в топик **metrics-topic**.
+
+Есть возможность отправки отдельной выбраной метрики вручную через REST API с помощью POST-метода `/metrics`, который принимает
+в теле запроса MetricRequestDto в виде JSON.
 
 ##### REST API
 Для взаимодействия с контроллером сервиса metrics-producer и получения информации о методах контроллера используется Swagger,
 который доступен по адресу:
-   ```
-   http://server:port/swagger-ui/index.html#/
-   ```
+```
+http://server:port/swagger-ui/index.html#/
+```
 где:
 - "server" - ip-адрес сервера, на котором развернуто приложение;
 - "port" - порт, на котором доступно приложение.
 
 Например при развертывании всех сервисов с помощью Docker будет следующий адрес:
-   ```
-   http://127.0.0.1:8080/swagger-ui/index.html#/
-   ```
+```
+http://127.0.0.1:8080/swagger-ui/index.html#/
+```
 
 Также доступен дефолтный контроллер метрик Spring Boot Actuator.
 По следующему адресу можно получить список доступных для запроса метрик:
-   ```
-   http://127.0.0.1:8080/actuator/metrics
-   ```
+```
+http://127.0.0.1:8080/actuator/metrics
+```
 Пример адреса для получения значений конкретной метрики:
-   ```
-   http://127.0.0.1:8080/actuator/metrics/disk.total
-   ```
+```
+http://127.0.0.1:8080/actuator/metrics/disk.total
+```
 ### metrics-consumer
-...
+Сервис для получения метрик из топика Кафки **metrics-topic** и сохранения их в СУБД Postgresql.
 
 Таблицы БД создаются с помощью скрипта Liquibase:
-   ```
-   src/main/resources/db/changelog/liquibase.xml
-   ```
-
-Unit-тесты расположены в пакете:
-   ```
-   src/test/java/t1/school/consumer
-   ```
+```
+src/main/resources/db/changelog/liquibase.xml
+```
 
 ##### REST API
 Для взаимодействия с контроллером сервиса metrics-consumer и получения информации о методах контроллера используется Swagger,
 который доступен при развертывании всех сервисов с помощью Docker по следующему адресу:
-   ```
-   http://127.0.0.1:8090/swagger-ui/index.html#/
-   ```
+```
+http://127.0.0.1:8090/swagger-ui/index.html#/
+```
 
 # Запуск приложения для проверки
-1. ОС Windows 10: 
+1. ОС Windows 10: оба модуля приложения можно запустить вместе с СУБД Postgresql, Kafka и Zookeeper с помощью Docker.
+Для этого необходимо:
+- Скачать архив с master-ветки репозитория проекта по следующему адресу:
+```
+https://github.com/RSVarfolomeev/t1_task2/archive/refs/heads/master.zip
+```
+- Из корневой папки проекта в командной строке выполнить команду для развертывания проекта:
+```
+docker-compose up
+```
+- После запуска проекта metrics-producer будет доступен на порту 8080, metrics-consumer - 8090, СУБД Postgresql на порту 15432.
+
+2. Linux (CentOS 7): такой же способ запуска проекта, как было описано выше, но для Linux на примере CentOS 7:
+- По нижеуказанной инструкции развертываем Docker:
+```
+https://docs.docker.com/engine/install/centos/
+```
+- Создаем папку для клонирования проекта, клонируем master-ветку репозитория с проектом:
+```
+mkdir /opt/app
+git clone https://github.com/RSVarfolomeev/t1_task2.git /opt/app
+```
+- Переходим в корневую папку проекта и развертываем проект с помощью docker compose:
+```
+cd /opt/app
+docker compose up
+```
+- После запуска проекта metrics-producer будет доступен на порту 8080, metrics-consumer - 8090, СУБД Postgresql на порту 15432.
 ---
 #### Используемый стек технологий:
 
