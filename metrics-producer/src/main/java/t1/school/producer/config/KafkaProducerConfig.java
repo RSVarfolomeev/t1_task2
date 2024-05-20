@@ -14,17 +14,10 @@ import org.springframework.util.backoff.FixedBackOff;
 public class KafkaProducerConfig {
     @Value("${topic.name}")
     private String metricsTopic;
-    @Value("${topic.name-dlt}")
-    private String metricsTopicDlt;
 
     @Bean
     public NewTopic metricsTopic() {
         return new NewTopic(metricsTopic, 1, (short) 1);
-    }
-
-    @Bean
-    public NewTopic dltMetricsTopic() {
-        return new NewTopic(metricsTopicDlt, 1, (short) 1);
     }
 
     @Bean

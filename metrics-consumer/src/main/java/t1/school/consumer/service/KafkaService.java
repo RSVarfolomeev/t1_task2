@@ -34,9 +34,4 @@ public class KafkaService {
             log.error("Ошибка при попытке десериализации сообщения: ", ex);
         }
     }
-
-    @KafkaListener(id = "metric-consumer-DLT", topics = "${topic.name-dlt}")
-    public void listenMetricsDlt(byte[] in) {
-        log.warn("Получено сообщение в DLT топике: {}", new String(in));
-    }
 }

@@ -74,6 +74,14 @@ src/main/resources/db/changelog/liquibase.xml
 http://127.0.0.1:8090/swagger-ui/index.html#/
 ```
 
+### Kafka
+В Кафке имеется 1 топик:
+* `metrics-topic` - получает сообщения из сервиса metrics-producer и передает их сервису metrics-consumer.
+
+Настройки конфигурации Кафки для каждого сервиса находятся в файлах `application.yml` и в классах
+`KafkaConsumerConfig`, `KafkaProducerConfig`.
+
+ 
 # Запуск приложения для проверки
 1. ОС Windows 10: оба модуля приложения можно запустить вместе с СУБД Postgresql, Kafka и Zookeeper с помощью Docker.
 Для этого необходимо:
@@ -108,4 +116,4 @@ docker compose up
 
 ---
 
-Java 17, Spring Boot, Spring Web, Spring Data Jpa, Postgresql, Liquibase, Spring Boot Actuator, Spring Kafka, Swagger, Docker, Maven
+Java 17, Spring Boot, Spring Web, Spring Data Jpa, Postgresql, Liquibase, Spring Boot Actuator, Kafka, Swagger, Docker, Maven
