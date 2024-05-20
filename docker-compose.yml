@@ -1,4 +1,33 @@
 services:
+  java-app-producer:
+    build:
+      context: ./metrics-producer
+    container_name: java-producer
+    ports:
+      - "8080:8080"
+    depends_on:
+      - kafka
+    restart: unless-stopped
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+
+  java-app-consumer:
+    build:
+      context: ./metrics-consumer
+    container_name: java-consumer
+    ports:
+      - "8090:8090"
+    depends_on:
+      - service-db
+      - kafka
+    restart: unless-stopped
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://service-postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+
   service-db:
     image: postgres:16
     container_name: service-postgres
