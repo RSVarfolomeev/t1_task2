@@ -2,7 +2,7 @@ package t1.school.producer.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,6 +14,6 @@ public class MetricDto {
     private String name;
     private String description;
     private String baseUnit;
-    private LocalDateTime time;
+    private Timestamp time;
     private Double value;
 }

@@ -4,9 +4,8 @@ import org.springframework.boot.actuate.metrics.MetricsEndpoint;
 import org.springframework.stereotype.Service;
 import t1.school.producer.dto.MetricDto;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class MetricsCollectorService {
@@ -26,21 +25,30 @@ public class MetricsCollectorService {
         this.metricsEndpoint = metricsEndpoint;
     }
 
-    public List<MetricDto> getMetrics() {
+    public MetricDto getMetric(String metricName) {
+        return extractMetric(metricName);
+    }
+
+    public List<MetricDto> getMetricsForScheduler() {
         List<MetricDto> metrics = new ArrayList<>();
-
-        metricNames.forEach(mn ->{
-            MetricsEndpoint.MetricDescriptor metricDescriptor = metricsEndpoint.metric(mn, null);
-            metrics.add(new MetricDto(mn,
-                    metricDescriptor.getDescription(),
-                    metricDescriptor.getBaseUnit(),
-                    LocalDateTime.now(),
-                    metricDescriptor.getMeasurements().stream()
-                            .map(MetricsEndpoint.Sample::getValue)
-                            .findFirst()
-                            .orElse((double) 0)));
-        });
-
+        metricNames.forEach(mn -> metrics.add(extractMetric(mn)));
         return metrics;
+    }
+
+    private MetricDto extractMetric(String metricName) {
+        MetricsEndpoint.MetricDescriptor metricDescriptor = metricsEndpoint.metric(metricName, null);
+
+        if (metricDescriptor == null) {
+            throw new IllegalArgumentException("Недопустимое имя метрики: " + metricName);
+        }
+
+        return new MetricDto(metricDescriptor.getName(),
+                metricDescriptor.getDescription(),
+                metricDescriptor.getBaseUnit(),
+                new Timestamp(System.currentTimeMillis()),
+                metricDescriptor.getMeasurements().stream()
+                        .map(MetricsEndpoint.Sample::getValue)
+                        .findFirst()
+                        .orElse((double) 0));
     }
 }

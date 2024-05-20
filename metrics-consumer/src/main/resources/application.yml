@@ -9,20 +9,21 @@ spring:
     consumer:
       value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
 
-#  jpa:
-#    hibernate:
-#      ddl-auto: none
-#    show-sql: true
-#    database-platform: org.hibernate.dialect.PostgreSQLDialect
-#
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/postgres
-#    username: postgres
-#    password: admin
-#    driver-class-name: org.postgresql.Driver
-#
-#  liquibase:
-#    change-log: classpath:/db/changelog/liquibase.xml
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    url: jdbc:postgresql://localhost:15432/postgres
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:/db/changelog/liquibase.xml
 
 topic:
   name: metrics-topic
+  name-dlt: metrics-topic.DLT

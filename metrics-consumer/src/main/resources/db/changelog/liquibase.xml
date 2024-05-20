@@ -5,7 +5,19 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
 
-<!--    author="Varfolomeev"-->
+    <!--    author="Varfolomeev"-->
 
 
+    <changeSet id="1716130665471-1" author="Varfolomeev">
+        <createTable tableName="metrics">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_metrics"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="base_unit" type="VARCHAR(255)"/>
+            <column name="time" type="DATETIME"/>
+            <column name="value" type="DOUBLE"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

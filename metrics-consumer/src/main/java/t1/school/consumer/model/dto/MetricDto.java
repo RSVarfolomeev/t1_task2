@@ -1,8 +1,8 @@
-package t1.school.consumer.dto;
+package t1.school.consumer.model.dto;
 
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,6 +14,6 @@ public class MetricDto {
     private String name;
     private String description;
     private String baseUnit;
-    private LocalDateTime time;
+    private Timestamp time;
     private Double value;
 }

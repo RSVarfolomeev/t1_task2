@@ -1,4 +1,14 @@
 services:
+  service-db:
+    image: postgres:16
+    container_name: service-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=postgres
+    ports:
+      - "15432:5432"
+
   zookeeper:
     image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper

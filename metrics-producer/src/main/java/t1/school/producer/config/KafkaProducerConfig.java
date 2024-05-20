@@ -14,8 +14,8 @@ import org.springframework.util.backoff.FixedBackOff;
 public class KafkaProducerConfig {
     @Value("${topic.name}")
     private String metricsTopic;
-
-    private static final String DLT_TOPIC_SUFFIX = ".DLT";
+    @Value("${topic.name-dlt}")
+    private String metricsTopicDlt;
 
     @Bean
     public NewTopic metricsTopic() {
@@ -24,11 +24,11 @@ public class KafkaProducerConfig {
 
     @Bean
     public NewTopic dltMetricsTopic() {
-        return new NewTopic(metricsTopic + DLT_TOPIC_SUFFIX, 1, (short) 1);
+        return new NewTopic(metricsTopicDlt, 1, (short) 1);
     }
 
     @Bean
     public CommonErrorHandler errorHandler(KafkaOperations<Object, Object> kafkaOperations) {
-        return new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaOperations), new FixedBackOff(1000L, 2));
+        return new DefaultErrorHandler(new DeadLetterPublishingRecoverer(kafkaOperations), new FixedBackOff(1000L, 1));
     }
 }

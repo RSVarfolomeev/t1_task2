@@ -1,4 +1,4 @@
-package t1.school.producer.configs;
+package t1.school.producer.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
