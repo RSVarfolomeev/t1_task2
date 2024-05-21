@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MetricDto {

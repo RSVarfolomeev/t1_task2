@@ -49,7 +49,7 @@ public class MetricsSenderService {
                 }
             }));
         } catch (Exception ex) {
-            log.error("Возникла ошибка в периодической задаче при отправке метрик в Кафку: ", ex);
+            log.error("Возникла ошибка при отправке метрик в Кафку: ", ex);
         }
     }
 }
